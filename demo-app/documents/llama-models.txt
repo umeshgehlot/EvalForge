@@ -1,0 +1,13 @@
+LLaMA: Meta's Open Foundation Models
+
+LLaMA (Large Language Model Meta AI) is a family of open-weight language models released by Meta AI, beginning in 2023. LLaMA models democratized access to capable large language models by releasing weights publicly for research and (in later versions) commercial use.
+
+LLaMA 1 (February 2023) released models ranging from 7B to 65B parameters, trained on 1 to 1.4 trillion tokens from publicly available data: Common Crawl, C4, GitHub, Wikipedia, Gutenberg books, ArXiv, and Stack Exchange. Crucially, the 13B LLaMA 1 model outperformed GPT-3 (175B) on most benchmarks, demonstrating that smaller models trained on more data could outperform larger undertrained ones (consistent with Chinchilla scaling laws).
+
+LLaMA 2 (July 2023) added models up to 70B parameters with a more permissive commercial license. It doubled the pretraining data to 2 trillion tokens. Chat variants (LLaMA 2-Chat) were instruction-tuned and RLHF-aligned for dialogue use. Context length was extended to 4,096 tokens. LLaMA 2-70B-Chat matched or exceeded many closed-source models on standard benchmarks.
+
+LLaMA 3 (April 2024) dramatically improved quality with 8B and 70B parameter models trained on 15 trillion tokens — more than 7× more data than LLaMA 2. The tokenizer vocabulary was expanded to 128,000 tokens (from 32,000), improving multilingual coverage. LLaMA 3-70B Instruct matched GPT-4 on several benchmarks. A 405B parameter model was also released.
+
+The open-weight release strategy had major consequences for the AI ecosystem. The LLaMA weights were fine-tuned by the community into hundreds of variants: Alpaca (Stanford), Vicuna, WizardLM, Mistral, Mixtral, and many others. Quantized versions (GGUF format) enabled running 7B models on laptops.
+
+LLaMA models use Grouped Query Attention (GQA) to reduce KV cache memory, RoPE (Rotary Position Embeddings) for position encoding, and SwiGLU activation functions. The architecture omits bias terms and uses RMSNorm instead of LayerNorm, matching other modern LLM designs.

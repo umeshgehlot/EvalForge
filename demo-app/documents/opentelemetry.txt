@@ -1,0 +1,21 @@
+OpenTelemetry and LLM Observability
+
+OpenTelemetry (OTel) is an open-source observability framework providing vendor-neutral APIs, SDKs, and instrumentation for collecting traces, metrics, and logs from distributed applications. It is the industry standard for production observability.
+
+A trace represents a single end-to-end request through a system. A trace is composed of spans — individual units of work with a name, start time, end time, and key-value attributes. Spans have parent-child relationships forming a tree that represents the causal flow of execution within a request.
+
+For LLM applications, traces are particularly valuable because a single user request may involve multiple hops: a retrieval call to a vector database, one or more LLM API calls, post-processing steps, and potentially tool invocations. Without tracing, debugging slow or incorrect responses requires log archaeology.
+
+OpenInference is an open semantic convention for LLM traces, built on top of OTel. It defines standard attribute names for LLM spans: input.value, output.value, llm.model_name, llm.token_count.prompt, llm.token_count.completion, retrieval.documents, embedding.model_name. Using standard conventions enables interoperability between instrumentation libraries and observability backends.
+
+Key span types in an LLM application:
+- LLM span: records the prompt sent, response received, model used, token counts, latency
+- Retrieval span: records the query, retrieved documents with scores, vector store name, latency
+- Embedding span: records the text embedded, model used, embedding dimensions, latency
+- Tool span: records the tool name, input arguments, output result, latency
+
+Arize Phoenix and LangSmith are LLM observability platforms that ingest OTel traces and provide UI for exploring LLM traces, debugging failures, and running evaluations. Grafana and Jaeger can also ingest OTel traces for infrastructure-level analysis.
+
+For eval systems like EvalForge, every eval run item should have associated trace data linking to the RAG app's internal spans. This enables root cause analysis: if an answer scores poorly on faithfulness, the trace shows exactly which chunks were retrieved, what prompt was sent to the LLM, and what the model responded — making the failure mode actionable.
+
+Instrumenting LlamaIndex applications with OpenTelemetry uses the openinference-instrumentation-llama-index package, which automatically wraps LlamaIndex's query engine, retriever, and LLM calls with spans and exports them to any OTel-compatible backend.

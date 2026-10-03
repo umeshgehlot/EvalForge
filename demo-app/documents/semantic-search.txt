@@ -1,0 +1,15 @@
+Semantic Search
+
+Semantic search retrieves documents based on meaning rather than keyword overlap. Unlike traditional keyword search, which matches exact terms, semantic search understands that "automobile accident" and "car crash" are about the same thing.
+
+The two primary retrieval paradigms are sparse retrieval and dense retrieval. Sparse retrieval methods like BM25 (Best Match 25) represent documents as sparse term-frequency vectors and use inverted indexes for fast lookup. BM25 is highly effective for queries containing rare or specific terms and is the backbone of systems like Elasticsearch and Apache Solr. It is fast, interpretable, and requires no training data.
+
+Dense retrieval encodes both queries and documents as dense embedding vectors and retrieves by nearest-neighbor search. A bi-encoder model independently encodes the query and document; retrieval is the dot product or cosine similarity between their vectors. Dense retrieval handles paraphrase and semantic equivalence better than BM25 but may miss exact keyword matches.
+
+Hybrid search combines sparse and dense retrieval to get the benefits of both. A common approach is Reciprocal Rank Fusion (RRF): retrieve top-k results from each method, convert ranks to scores (score = 1/(rank + 60)), and sum scores across methods. This is robust and does not require a learned fusion model.
+
+Re-ranking is a two-stage approach. Stage 1 uses a fast bi-encoder to retrieve a candidate set (e.g., top-100). Stage 2 uses a slower but more accurate cross-encoder that jointly encodes the query and each candidate document, producing a relevance score. The cross-encoder attends to the interaction between query and document tokens, making it more accurate than bi-encoders but O(n) rather than O(1) at retrieval time.
+
+In RAG systems, retrieval quality directly determines generation quality — no amount of LLM sophistication can compensate for poor context retrieval. Retrieval metrics include Recall@k (fraction of relevant documents appearing in the top-k results) and Mean Reciprocal Rank (MRR). A common target is Recall@5 > 0.80, meaning the correct answer appears in the top 5 retrieved chunks for at least 80% of queries.
+
+Chunking strategy affects dense retrieval quality significantly. Chunks that are too small lose context; chunks that are too large dilute the relevant signal. A common heuristic is 256-512 tokens per chunk with 50-token overlap.

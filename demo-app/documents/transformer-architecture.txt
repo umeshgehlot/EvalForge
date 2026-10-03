@@ -1,0 +1,17 @@
+The Transformer Architecture
+
+The Transformer is a deep learning model architecture introduced in the 2017 paper "Attention Is All You Need" by Vaswani et al. at Google Brain. It replaced recurrent neural networks (RNNs) and convolutional neural networks for sequence-to-sequence tasks and became the foundation of virtually all modern large language models.
+
+The original Transformer has an encoder-decoder structure. The encoder maps an input sequence of tokens to a sequence of continuous representations. The decoder then generates an output sequence one token at a time, attending to the encoder's output and its own previously generated tokens. This design was originally applied to machine translation.
+
+The key building block is the multi-head self-attention layer. Instead of processing tokens sequentially like an RNN, the Transformer processes all tokens in parallel. Each token attends to every other token in the sequence simultaneously, allowing the model to capture long-range dependencies regardless of the distance between tokens.
+
+Each Transformer layer consists of two sublayers: a multi-head attention sublayer and a position-wise feed-forward network. Residual connections are applied around each sublayer, followed by layer normalization. This design stabilizes training and enables very deep stacks of layers.
+
+Because the Transformer has no inherent notion of sequence order, positional encodings are added to the input embeddings. The original paper used sinusoidal positional encodings, but most modern models use learned positional embeddings or more sophisticated schemes like rotary position embeddings (RoPE) or ALiBi.
+
+BERT uses only the Transformer encoder, making it suitable for classification and understanding tasks. GPT uses only the decoder with causal (masked) attention, making it suitable for text generation. T5 and BART use the full encoder-decoder structure.
+
+The Transformer scales efficiently with compute: larger models trained on more data consistently produce better results, a relationship quantified by neural scaling laws. This scaling behavior drove the development of GPT-3, GPT-4, Claude, Gemini, and other large language models.
+
+Key hyperparameters include model dimension (d_model), number of attention heads, number of layers, and feed-forward dimension. GPT-3 uses 96 layers, 96 attention heads, and d_model of 12288, totaling 175 billion parameters.

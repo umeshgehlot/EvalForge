@@ -1,0 +1,19 @@
+Celery and Redis for Async Task Processing
+
+Celery is a distributed task queue for Python that executes tasks asynchronously in background workers. Combined with Redis as a message broker and result backend, it is the standard solution for running long-running jobs outside of web request cycles.
+
+In an LLM evaluation system, eval runs can take minutes or hours depending on dataset size and the number of scorers. Celery allows the web API to accept a run request, enqueue the work, and return immediately with a run ID. The client polls for progress while workers execute the evaluation in the background.
+
+Celery's architecture has three components. The producer (the FastAPI application) creates tasks and publishes them to the broker. The broker (Redis) is a message queue that stores pending task messages. The consumer (Celery workers) reads tasks from the broker, executes them, and optionally stores results in the result backend (also Redis or a database).
+
+Task definition is simple — a function decorated with @celery_app.task becomes a distributable unit of work. Tasks can be called with .delay() (fire and forget) or .apply_async() (with options like countdown, eta, retry policy). The task receives serialized arguments, executes, and returns a serializable result.
+
+For eval runs, a common fan-out pattern dispatches one Celery task per dataset row (a "chord" or group of tasks), runs them in parallel across worker processes, then runs a callback task to aggregate results when all row tasks complete. This maximizes parallelism and makes individual row failures independent — one bad input doesn't kill the entire run.
+
+Celery's retry mechanism automatically retries failed tasks with configurable backoff. This handles transient failures like LLM API rate limits or temporary network errors without requiring manual intervention.
+
+Flower is Celery's web-based monitoring tool, showing active workers, task throughput, success/failure rates, and task details. For production deployments, Celery metrics can be exported to Prometheus via celery-prometheus-exporter.
+
+Redis as a Celery broker is recommended for development and moderate-scale production. RabbitMQ offers better guarantees for at-most-once delivery and is preferred for very high throughput. Redis is simpler to operate and sufficient for most LLM eval workloads.
+
+Worker concurrency can be set to match the number of CPU cores for CPU-bound tasks or much higher for I/O-bound tasks (like LLM API calls that spend most time waiting for responses).

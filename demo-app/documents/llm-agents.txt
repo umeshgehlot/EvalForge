@@ -1,0 +1,17 @@
+LLM Agents and Tool Use
+
+LLM agents are systems where a language model autonomously plans and executes sequences of actions to accomplish complex, multi-step goals. The model acts as an orchestrator, choosing which tools to invoke, interpreting results, and iterating until the task is complete.
+
+Tool use (also called function calling) is the foundation of LLM agents. The model is given a description of available tools (functions with defined input/output schemas) and can choose to invoke them. OpenAI's function calling API, Anthropic's tool use API, and similar interfaces allow the model to emit structured JSON specifying a tool name and arguments, which the application executes and returns results to the model.
+
+The ReAct (Reasoning + Acting) framework interleaves chain-of-thought reasoning with action steps. The model alternates between Thought (reasoning about what to do next), Action (invoking a tool), and Observation (the tool result), repeating until it arrives at a final answer. ReAct agents are more transparent than pure action-taking systems because intermediate reasoning is explicit.
+
+Common tools in LLM agents include web search, code execution (Python sandbox), file read/write, database queries, API calls, and calendar/email access. Agents for software engineering tasks (like Devin, Claude Code) use shells, file systems, and browsers as tools.
+
+Memory architectures for agents include: in-context memory (conversation history within the context window), external memory (vector database of past interactions), episodic memory (structured records of past agent runs), and procedural memory (instructions or skills stored as tools).
+
+Planning strategies range from simple single-step tool selection to hierarchical decomposition. Plan-and-execute agents decompose a task into a sequence of subtasks, execute each sequentially, and revise the plan if steps fail. Tree-of-Thought planning explores multiple solution branches in parallel.
+
+Key challenges in agent systems: error accumulation (failures in early steps propagate), tool reliability (agents struggle when tools return unexpected formats), hallucinated tool calls (models invoke non-existent tools or pass wrong argument types), and lack of sandboxing (agents with file and shell access can cause irreversible damage).
+
+Multi-agent systems coordinate multiple specialized agents: a planner agent decomposes tasks, worker agents execute subtasks, and a critic agent validates results before proceeding.

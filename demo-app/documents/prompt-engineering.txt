@@ -1,0 +1,19 @@
+Prompt Engineering
+
+Prompt engineering is the practice of designing inputs to language models to reliably elicit desired outputs. As LLMs became capable enough to perform tasks from natural language instructions, prompt engineering became a critical skill for building reliable LLM-powered applications.
+
+System prompts set the model's persona, task context, output format, and constraints. They are typically sent as a separate "system" message at the start of the conversation and persist throughout the interaction. A well-written system prompt dramatically reduces output variability and improves adherence to desired behavior.
+
+Role prompting instructs the model to adopt a specific persona: "You are an expert Python developer." This activates relevant knowledge patterns and output styles learned during pretraining.
+
+Few-shot prompting provides examples of desired input-output pairs within the prompt before the actual query. This is the most reliable way to specify output format. Example quality matters more than quantity — three excellent examples outperform ten mediocre ones.
+
+Chain-of-thought (CoT) prompting elicits step-by-step reasoning before the final answer. Adding "Let's think step by step" to a prompt (zero-shot CoT) or providing examples that show intermediate reasoning steps (few-shot CoT) significantly improves performance on math, logic, and multi-step reasoning tasks.
+
+Delimiters like XML tags, triple backticks, or angle brackets separate instructions from user-provided content. This is important for preventing prompt injection — where malicious user input attempts to override the system instructions. Wrapping user content in explicit delimiters and instructing the model to treat it as data makes injection harder.
+
+Output format specification via JSON schemas, Pydantic models, or explicit format descriptions reduces parsing failures. Many modern LLMs support structured output (constrained decoding) that guarantees valid JSON.
+
+Temperature controls output randomness. Temperature 0 produces the most deterministic output (greedy decoding); temperature 1.0 samples from the full distribution. For factual retrieval and classification, low temperature (0–0.3) is preferable. For creative tasks, higher temperature (0.7–1.0) produces more varied responses.
+
+ReAct (Reasoning + Acting) prompting combines chain-of-thought reasoning with tool use, allowing the model to interleave reasoning steps with actions like search queries or code execution.

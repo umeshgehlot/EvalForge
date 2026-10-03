@@ -1,0 +1,17 @@
+The GPT Model Family
+
+GPT (Generative Pre-trained Transformer) is a family of autoregressive language models developed by OpenAI. Each generation dramatically expanded scale and capability, making GPT the most commercially impactful LLM lineage.
+
+GPT-1 (2018) demonstrated that unsupervised pretraining on a large text corpus followed by supervised fine-tuning on downstream tasks is a powerful paradigm. It used 117M parameters and a 12-layer decoder-only Transformer.
+
+GPT-2 (2019) scaled to 1.5B parameters trained on WebText (Reddit links with 3+ upvotes). OpenAI initially withheld the full model over concerns about misuse, but eventually released it. GPT-2 produced surprisingly coherent long-form text and demonstrated emergent few-shot capability.
+
+GPT-3 (2020) was a qualitative leap at 175B parameters trained on 300 billion tokens. Its key discovery was in-context learning: by providing a few examples in the prompt, the model could perform new tasks without any weight updates. GPT-3 popularized the few-shot prompting paradigm.
+
+InstructGPT (2022) fine-tuned GPT-3 using Reinforcement Learning from Human Feedback (RLHF). Human labelers provided demonstrations of desired behavior and ranked model outputs; these signals were used to train a reward model, which then guided policy optimization via PPO. InstructGPT was significantly preferred by users over raw GPT-3 despite being smaller.
+
+ChatGPT (2022) applied the InstructGPT recipe to a conversational format and launched as a product. It reached 100 million users in two months, the fastest consumer application growth in history.
+
+GPT-4 (2023) is a multimodal model accepting both text and image inputs. OpenAI did not disclose its architecture or parameter count. GPT-4 passes the bar exam in the top 10% of test takers and shows significantly improved reasoning, instruction following, and reduced hallucination compared to GPT-3.5.
+
+GPT-4o (2024) optimized for speed and multimodality, supporting text, audio, and images natively in a single model. The "o" series models (o1, o3) introduced extended chain-of-thought reasoning at inference time for improved performance on math and coding benchmarks.

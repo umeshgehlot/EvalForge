@@ -1,0 +1,17 @@
+Word and Sentence Embeddings
+
+Embeddings are dense vector representations that map discrete tokens or text sequences into a continuous vector space where semantic similarity corresponds to geometric proximity. They are foundational to modern NLP and enable vector search.
+
+Early word embeddings emerged with Word2Vec (Mikolov et al., 2013), trained using two architectures: Continuous Bag of Words (CBOW) predicts a word from its context, while Skip-gram predicts context words from a target word. The result is a fixed vector per word type capturing syntactic and semantic regularities — the classic example being king - man + woman ≈ queen.
+
+GloVe (Global Vectors, Stanford 2014) trained embeddings on word co-occurrence statistics from a large corpus. FastText (Facebook 2016) improved on Word2Vec by representing words as bags of character n-grams, enabling embeddings for out-of-vocabulary words by composing subword vectors.
+
+These static embeddings assign one vector per word type regardless of context. The word "bank" has the same vector in "river bank" and "bank account." BERT and other Transformer models produce contextual embeddings — each token gets a different vector depending on its surrounding context.
+
+Sentence embeddings encode entire sentences into single vectors. The simplest approach averages token embeddings, but this loses information. SBERT (Sentence-BERT, 2019) fine-tunes BERT using siamese networks on natural language inference data to produce much better sentence-level representations for semantic similarity.
+
+Modern embedding models like OpenAI's text-embedding-3-small and text-embedding-3-large, Cohere Embed, and E5 are trained specifically for retrieval tasks. They produce 768 to 3072 dimensional vectors. text-embedding-3-small produces 1536-dimensional vectors by default.
+
+Embedding quality is measured on benchmarks like MTEB (Massive Text Embedding Benchmark), which covers retrieval, clustering, classification, and semantic similarity tasks across multiple languages.
+
+In retrieval-augmented generation (RAG) systems, document chunks are embedded and stored in a vector database. At query time, the question is embedded with the same model and nearest-neighbor search retrieves relevant chunks. The cosine similarity or dot product between vectors determines relevance.

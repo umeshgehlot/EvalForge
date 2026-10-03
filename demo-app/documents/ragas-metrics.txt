@@ -1,0 +1,19 @@
+RAGAS: RAG Evaluation Metrics
+
+RAGAS (Retrieval-Augmented Generation Assessment) is an open-source framework for evaluating RAG pipelines without requiring manually annotated ground-truth labels for every test case. It uses LLM calls to compute metrics automatically, enabling scalable evaluation.
+
+RAGAS defines four core metrics that cover the two main components of a RAG system: the retriever and the generator.
+
+Context Precision measures whether the retrieved chunks are relevant to the question. It is computed as the proportion of retrieved chunks that are actually useful for answering the question. High context precision means the retriever is not returning irrelevant noise. Formula: (number of relevant retrieved chunks) / (total retrieved chunks).
+
+Context Recall measures whether all the information needed to answer the question is present in the retrieved chunks. It identifies how many of the ground truth answer's claims are covered by the retrieved context. High context recall means the retriever is not missing relevant information. This metric requires a reference answer.
+
+Faithfulness measures whether the generated answer is grounded in the retrieved context — i.e., none of the answer's claims contradict or go beyond what the context supports. RAGAS extracts individual claims from the answer and uses an LLM to verify each claim against the context. Faithfulness is the fraction of claims that are supported. This metric does not require a reference answer.
+
+Answer Relevance measures whether the generated answer actually addresses the question asked. A response that correctly quotes from context but doesn't answer the question would have high faithfulness but low answer relevance. RAGAS generates reverse questions from the answer and measures how similar they are to the original question.
+
+These four metrics form a 2×2 matrix: retrieval quality (precision × recall) and generation quality (faithfulness × relevance). A complete RAG evaluation should cover all four dimensions, as failure modes occur in each.
+
+Beyond RAGAS, additional RAG-specific metrics include: answer correctness (semantic similarity between answer and reference), citation accuracy (whether cited sources contain the claimed information), and hallucination rate (fraction of answers containing fabricated claims).
+
+RAGAS is implemented in Python and integrates with LangChain, LlamaIndex, and can be used standalone. Each metric call makes LLM API calls, so evaluation cost scales with dataset size and number of metrics.

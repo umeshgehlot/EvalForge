@@ -1,0 +1,15 @@
+Hallucination in Large Language Models
+
+Hallucination refers to the generation of content that is factually incorrect, contradicted by provided context, or completely fabricated. It is one of the most significant reliability problems in deployed LLM applications.
+
+There are two distinct types of hallucination. Factual hallucination occurs when the model generates statements that contradict verifiable facts in the world — for example, inventing a citation that doesn't exist, fabricating a historical date, or attributing a quote to the wrong person. Faithful hallucination occurs in grounded generation tasks (like RAG or summarization) when the model's output contradicts or cannot be supported by the provided source documents, even if the claim might be true in general.
+
+The root causes are debated. LLMs are trained to predict the next token, rewarding fluency and coherence rather than factual accuracy. The model learns statistical associations between concepts without a ground truth world model. When the model is uncertain, it generates plausible-sounding text rather than expressing uncertainty.
+
+RAG partially mitigates hallucination by providing relevant source material at inference time. The model is instructed to answer based only on the retrieved context. However, models can still fail to follow grounding instructions, fabricate information not in the context, or misattribute facts to wrong sources. Faithfulness evaluation (checking whether each claim in the output is supported by the retrieved context) is the primary RAG-specific metric for detecting this.
+
+Detection approaches include: consistency checking (generate multiple responses and flag inconsistencies), grounding verification (use an NLI model to check whether each output sentence is entailed by the source), self-verification (ask the model to identify unsupported claims in its own output), and external knowledge grounding (verify against a knowledge base).
+
+Mitigation strategies include: retrieval augmentation, chain-of-thought prompting, fine-tuning on factual datasets, constitutional AI (asking the model to critique and revise its own outputs), and calibrated uncertainty — training models to express "I don't know" when confidence is low.
+
+The hallucination problem means that LLM outputs in high-stakes domains (medical, legal, financial) must be verified by human experts before acting on them.

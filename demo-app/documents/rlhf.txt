@@ -1,0 +1,17 @@
+Reinforcement Learning from Human Feedback (RLHF)
+
+Reinforcement Learning from Human Feedback (RLHF) is a training technique that aligns language models with human preferences using feedback from human raters. It was the key technique behind InstructGPT, ChatGPT, and Claude's success in following instructions and producing helpful, harmless outputs.
+
+The RLHF pipeline has three stages. First, supervised fine-tuning (SFT): the pretrained model is fine-tuned on a dataset of (prompt, high-quality response) pairs curated by human labelers who write or select ideal responses. This gives the model a baseline for instruction following.
+
+Second, reward model training: human raters compare pairs of model outputs and indicate which is better. These preference judgments train a reward model that predicts a scalar reward for any (prompt, response) pair. The reward model learns to assign higher scores to outputs that human raters preferred.
+
+Third, policy optimization: the SFT model (the "policy") is further trained using Proximal Policy Optimization (PPO) to maximize the reward model's score, subject to a KL divergence penalty that prevents the policy from drifting too far from the SFT baseline. The KL penalty prevents reward hacking — gaming the reward model rather than producing genuinely good outputs.
+
+Reward hacking occurs when the policy finds outputs that score highly according to the reward model but are not actually preferred by humans — long but repetitive answers, excessive caveats, sycophantic agreement. This is one of the primary failure modes of RLHF.
+
+Constitutional AI (Anthropic) extends RLHF by having the model critique its own outputs against a set of principles (the "constitution") before human feedback is collected. This reduces reliance on human labeling and makes the training process more transparent.
+
+Direct Preference Optimization (DPO, 2023) is a simpler alternative to RLHF that directly optimizes the policy on preference data without training a separate reward model or running PPO. DPO reformulates the reward maximization objective as a classification problem over preferred vs. rejected response pairs. It is much simpler to implement and often matches or exceeds RLHF quality.
+
+RLHF is computationally expensive because PPO requires multiple models in memory simultaneously (policy, reference policy, reward model, and value model). DPO eliminates this overhead at the cost of slightly less flexibility.

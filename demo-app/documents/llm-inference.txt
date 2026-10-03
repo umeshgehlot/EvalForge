@@ -1,0 +1,17 @@
+LLM Inference and Serving
+
+LLM inference is computationally intensive and has distinct characteristics from training. Understanding inference optimization is critical for deploying LLMs cost-effectively at scale.
+
+Token generation is autoregressive: the model generates one token at a time, each new token depending on all previous tokens. This means generating a 200-token response requires 200 forward passes through the model. Each pass is compute-bound for the first few tokens (prefill phase) and memory-bandwidth-bound for subsequent tokens (decode phase).
+
+The KV cache stores the key and value tensors from the attention computation for previously generated tokens, avoiding recomputation on each decoding step. Without KV caching, inference cost scales quadratically with sequence length. With KV caching, it scales linearly. The KV cache memory requirement is proportional to batch size × sequence length × number of layers × d_model, and is often the primary memory bottleneck for serving long-context models.
+
+Continuous batching (also called iteration-level scheduling) improves GPU utilization by dynamically scheduling new requests as slots free up within a running batch, rather than waiting for entire batches to complete before starting new ones. vLLM pioneered this approach with PagedAttention, which manages KV cache memory like virtual memory pages, enabling significantly higher throughput.
+
+Quantization reduces precision of model weights and activations from float32 or bfloat16 to int8 or int4. INT8 quantization typically reduces memory by 2× with minimal accuracy loss. INT4 (used in GPTQ, GGUF) reduces memory by 4× with small but measurable accuracy degradation. Quantization-aware training (QAT) reduces this degradation.
+
+Speculative decoding uses a small draft model to generate k candidate tokens quickly, then the large target model verifies them in a single parallel pass. Since verification is faster than generation, this reduces end-to-end latency by 2–3× on typical text distributions.
+
+Key serving metrics: time to first token (TTFT) measures prefill latency; inter-token latency (ITL) measures decode speed; throughput measures tokens per second per GPU. These trade off against each other — maximum throughput requires large batches which increases TTFT.
+
+FlashAttention is an IO-aware exact attention algorithm that tiles the attention computation to reduce memory bandwidth usage, enabling 2–4× speedups during both training and inference without approximation.

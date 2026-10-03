@@ -1,0 +1,15 @@
+BERT: Bidirectional Encoder Representations from Transformers
+
+BERT (Bidirectional Encoder Representations from Transformers) was introduced by Google in 2018 and became one of the most influential NLP models of its era. It fundamentally changed how the field approached language understanding tasks.
+
+Unlike GPT, which reads text left-to-right, BERT uses a bidirectional architecture — each token attends to all other tokens in both directions simultaneously. This bidirectionality enables richer contextual representations because a word's meaning is influenced by both its left and right context.
+
+BERT is pretrained using two self-supervised objectives. The first is Masked Language Modeling (MLM): 15% of input tokens are randomly masked and the model is trained to predict the original tokens. The second is Next Sentence Prediction (NSP): the model is given pairs of sentences and trained to predict whether the second sentence follows the first in the original document.
+
+After pretraining on large corpora (BooksCorpus + English Wikipedia, ~3.3 billion words), BERT is fine-tuned on downstream tasks by adding a small task-specific head. This transfer learning approach achieved state-of-the-art results on GLUE, SQuAD, and many other benchmarks at its release.
+
+BERT comes in two sizes: BERT-Base (110M parameters, 12 layers, 768 hidden dimensions, 12 attention heads) and BERT-Large (340M parameters, 24 layers, 1024 hidden dimensions, 16 attention heads).
+
+Several important variants followed. RoBERTa (Facebook, 2019) removed NSP, used larger batches, trained longer, and achieved better results. DistilBERT (Hugging Face) is a distilled version that is 40% smaller and 60% faster while retaining 97% of BERT's performance. ALBERT uses cross-layer parameter sharing and factorized embeddings to reduce model size. DeBERTa adds disentangled attention over content and position representations.
+
+BERT's representations are used extensively for semantic search and embedding tasks, though dedicated embedding models like SBERT (Sentence-BERT) fine-tune BERT using siamese networks to produce better sentence-level representations for similarity tasks.

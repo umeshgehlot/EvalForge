@@ -1,0 +1,19 @@
+Fine-Tuning Large Language Models
+
+Fine-tuning adapts a pretrained model to a specific task or domain by continuing training on a curated dataset. It is an alternative to few-shot prompting when you need consistent output format, domain expertise, or lower inference latency.
+
+Full fine-tuning updates all model weights. For a model with billions of parameters this requires significant GPU memory (typically multiple A100s) and risks catastrophic forgetting — the model may lose general capabilities while becoming specialized. Despite these costs, full fine-tuning achieves the highest task-specific performance.
+
+Parameter-efficient fine-tuning (PEFT) methods update only a small subset of parameters or add small trainable modules, leaving the original weights mostly frozen. This dramatically reduces memory requirements and training time.
+
+LoRA (Low-Rank Adaptation, 2021) is the most widely used PEFT method. It injects trainable rank-decomposition matrices into each Transformer layer's weight matrices: W' = W + BA, where B and A are low-rank matrices (rank r << d). Only B and A are trained, typically adding less than 1% of the original parameter count. LoRA adapters can be merged into the base weights at inference time with zero added latency.
+
+QLoRA (Quantized LoRA, 2023) combined LoRA with 4-bit quantization of the base model, enabling fine-tuning of 65B parameter models on a single 48GB GPU. This democratized fine-tuning of large models.
+
+Other PEFT methods include prefix tuning (prepends trainable soft tokens to the input), prompt tuning (similar but only at the embedding layer), and adapter layers (small bottleneck modules inserted between Transformer layers).
+
+Supervised fine-tuning (SFT) is the simplest approach: train on input-output demonstration pairs. The dataset format matters enormously — inconsistent formatting, ambiguous outputs, or poor quality examples degrade results significantly.
+
+When fine-tuning for safety and alignment, the dataset typically consists of instructions paired with high-quality responses. After SFT, RLHF or DPO can further align the model with human preferences.
+
+Fine-tuning is most justified when: (1) you have thousands of domain-specific examples, (2) you need a specific output format that's hard to enforce via prompting, or (3) you want to reduce prompt length and inference cost at scale.

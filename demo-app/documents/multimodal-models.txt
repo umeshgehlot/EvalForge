@@ -1,0 +1,17 @@
+Multimodal Language Models
+
+Multimodal language models process and generate content across multiple modalities — typically text combined with images, audio, or video. They extend the capabilities of pure text LLMs to understand visual content and reason about the physical world.
+
+Vision-language models (VLMs) accept both text and image inputs. The dominant architecture encodes images with a vision encoder (typically a vision Transformer like CLIP or ViT), projects the visual features into the language model's embedding space using a learned projection layer, and concatenates image tokens with text tokens as input to the language model. The language model then attends across both visual and textual tokens.
+
+CLIP (Contrastive Language-Image Pretraining, OpenAI 2021) trained a dual encoder on 400 million image-text pairs using a contrastive objective: matching images to their captions in embedding space. CLIP's image encoder is widely used as a vision backbone for multimodal models.
+
+LLaVA (Large Language and Vision Assistant) combined CLIP with Vicuna (a LLaMA variant) and a simple linear projection. Despite its simplicity, it demonstrated strong visual understanding. Later versions added better vision encoders and more sophisticated projectors.
+
+GPT-4V (GPT-4 with Vision) demonstrated frontier multimodal capability: reading text in images, understanding charts, interpreting medical scans, writing code from UI screenshots, and solving visual math problems. The architecture details were not disclosed.
+
+Claude's vision capability supports document understanding, chart interpretation, code extraction from screenshots, and detailed image description. Gemini 1.5 extended multimodal reasoning to video understanding across long context windows.
+
+Audio models process speech natively. Whisper (OpenAI) is a robust speech recognition model. GPT-4o processes audio, text, and images natively in a unified model rather than chaining separate systems, enabling faster and more natural voice interactions.
+
+Evaluation of multimodal models uses benchmarks like VQA (Visual Question Answering), MME (Multimodal Evaluation), MMMU (Massive Multitask Multimodal Understanding), and ChartQA. Hallucination is particularly prevalent in multimodal models — models confidently describe objects that are not present in images.

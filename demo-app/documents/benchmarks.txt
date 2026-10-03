@@ -1,0 +1,21 @@
+LLM Benchmarks
+
+LLM benchmarks are standardized evaluation suites that measure model capability across defined tasks, enabling consistent comparison between models and tracking progress over time.
+
+MMLU (Massive Multitask Language Understanding) tests knowledge across 57 academic subjects including mathematics, history, law, medicine, and computer science, using 4-choice multiple-choice questions. Scores above 90% on MMLU indicate expert-level knowledge across disciplines. GPT-4 scored approximately 87% at release.
+
+HellaSwag tests commonsense inference about physical situations: given a video caption, select the most plausible continuation from four options. While easy for humans (95% accuracy), early models struggled significantly. It is now largely saturated by frontier models.
+
+HumanEval (OpenAI) tests code generation with 164 Python programming problems. The model generates a function body from a docstring and the solution is verified by running unit tests. Pass@k measures whether at least one of k generated solutions passes all tests. GPT-4 achieves ~85% pass@1.
+
+GSM8K (Grade School Math) contains 8,500 grade school math word problems requiring multi-step arithmetic reasoning. Chain-of-thought prompting dramatically improves performance on this benchmark. GPT-4 achieves ~97%.
+
+MATH is a harder math benchmark with competition-level problems from AMC, AIME, and Olympiad competitions, organized into 5 difficulty levels. Even frontier models score below 70% on the hardest level 5 problems without special training.
+
+HELM (Holistic Evaluation of Language Models, Stanford) measures across 16 core scenarios including question answering, summarization, toxicity, and disinformation detection using multiple metrics simultaneously, providing a comprehensive profile rather than a single score.
+
+Benchmark contamination is a serious concern: if training data contains benchmark questions and answers, reported scores overestimate real capability. Models trained on internet data likely contain some benchmark data, making truly clean evaluation difficult. New benchmarks with unseen questions (like FrontierMath) attempt to mitigate this.
+
+ARC (AI2 Reasoning Challenge) tests science questions at elementary and middle school level, separated into easy (ARC-E) and challenge (ARC-C) subsets. The challenge set requires reasoning beyond simple retrieval and remains a useful signal for smaller models.
+
+LMSYS Chatbot Arena takes a different approach: real users submit prompts to pairs of anonymous models, vote for the better response, and scores are aggregated into an Elo ranking. This captures real user preference rather than narrow task performance.

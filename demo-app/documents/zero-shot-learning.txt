@@ -1,0 +1,17 @@
+Zero-Shot Learning and Instruction Following
+
+Zero-shot learning is the ability of a model to perform tasks it was never explicitly trained on, guided only by a natural language description of the task. In large language models, zero-shot capability emerges from pretraining on diverse text and is dramatically improved by instruction tuning.
+
+Base language models trained purely on next-token prediction are surprisingly capable zero-shot learners because they have been exposed to task descriptions and solutions across the internet. However, they often respond in unexpected formats or drift from the task intent, as they are optimized to continue text rather than follow instructions.
+
+Instruction tuning (fine-tuning on (instruction, response) pairs) dramatically improves zero-shot task following. FLAN (Finetuned Language Models Are Zero-Shot Learners, Google 2022) demonstrated that fine-tuning T5 on over 60 tasks phrased as instructions led to much better zero-shot performance on held-out tasks than the base model. The key is diversity of instruction phrasing and task types during fine-tuning.
+
+Task description quality matters enormously for zero-shot performance. Clear, specific, unambiguous instructions consistently outperform vague ones. Specifying output format, relevant constraints, and what to do in edge cases reduces output variability.
+
+Zero-shot vs. few-shot tradeoff: zero-shot is simpler (no examples to select or format) and uses less of the context window. Few-shot typically outperforms zero-shot because examples demonstrate the exact output format and style expected. The gap narrows with larger, better-instruction-tuned models.
+
+Zero-shot generalization is one of the key arguments for using large foundation models rather than training task-specific models from scratch. A well-prompted frontier model can handle a new task immediately; a specialized model requires labeled data collection, training, and evaluation cycles.
+
+Limitations of zero-shot learning: the model may interpret ambiguous instructions incorrectly, perform inconsistently across similar inputs, or fail on tasks requiring specialized knowledge not well-represented in pretraining data. For mission-critical tasks, zero-shot must be validated on representative examples before deployment.
+
+Evaluation of zero-shot capability uses held-out task benchmarks where no examples are provided in the prompt, such as MMLU (Massive Multitask Language Understanding), which tests knowledge across 57 academic subjects.

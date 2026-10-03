@@ -1,0 +1,19 @@
+Tokenization in Natural Language Processing
+
+Tokenization is the process of splitting text into discrete units (tokens) that serve as the basic input unit for language models. The choice of tokenization algorithm affects vocabulary size, model efficiency, and handling of rare words and multiple languages.
+
+Early NLP systems used word-level tokenization — each word is a token. This produces large vocabularies with many rare tokens and cannot handle out-of-vocabulary words at test time.
+
+Character-level tokenization treats each character as a token. It has a tiny vocabulary (95 printable ASCII characters) and handles any word, but produces very long sequences that are expensive for Transformer attention and place more burden on the model to learn word-level patterns.
+
+Subword tokenization is the dominant approach in modern LLMs. It splits text into units between characters and words, creating a vocabulary of ~30,000-100,000 tokens that balances sequence length and coverage.
+
+Byte-Pair Encoding (BPE) starts with a vocabulary of individual characters and iteratively merges the most frequent adjacent pair. Common words like "the" and "is" become single tokens; rare words are split into familiar subword pieces. GPT-2, GPT-3, GPT-4, and most OpenAI models use BPE with a vocabulary of ~50,000-100,000 tokens.
+
+SentencePiece (Google) implements both BPE and Unigram language model tokenization and works directly on raw text without pre-tokenization by whitespace. This makes it language-agnostic and handles languages without clear word boundaries (Chinese, Japanese, Thai). LLaMA models use SentencePiece.
+
+Tiktoken is OpenAI's fast BPE tokenizer. The cl100k_base encoding used by GPT-4 and GPT-3.5 has 100,277 tokens. Numbers, punctuation, and code are tokenized differently than natural language — "100000" tokenizes to multiple tokens.
+
+Context windows are measured in tokens, not characters or words. A rough conversion: 1 token ≈ 4 characters ≈ 0.75 words in English. "Hello, world!" is 4 tokens. A 128,000-token context window holds roughly 100,000 English words (a full novel).
+
+Tokenization has important implications for LLM behavior. Arithmetic on large numbers is difficult because each digit or digit group is a separate token. Reversing strings requires identifying character-level patterns across token boundaries. Non-English languages are typically over-fragmented relative to English, consuming more tokens for equivalent information.

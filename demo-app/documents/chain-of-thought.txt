@@ -1,0 +1,17 @@
+Chain-of-Thought Reasoning
+
+Chain-of-thought (CoT) prompting elicits intermediate reasoning steps from a language model before producing the final answer. By thinking through a problem step-by-step, models perform significantly better on tasks requiring multi-step reasoning, math, and logic.
+
+Wei et al. (2022) demonstrated that providing few-shot examples with explicit reasoning chains dramatically improves performance on arithmetic, commonsense reasoning, and symbolic manipulation tasks. The key insight is that the model's intermediate outputs serve as a scratch pad, allowing it to break down complex problems into tractable steps.
+
+Zero-shot chain-of-thought, proposed by Kojima et al. (2022), discovered that appending "Let's think step by step." to a prompt dramatically improves performance without any examples. This phrase triggers the model to generate an intermediate reasoning trace before the final answer. It is surprisingly effective across many model families.
+
+Self-consistency decoding improves CoT by sampling multiple reasoning chains with high temperature, then taking a majority vote on the final answer. This exploits the observation that correct reasoning chains may differ in path but converge on the same answer. Self-consistency typically improves accuracy by 5-15% over greedy CoT on math benchmarks.
+
+Tree of Thoughts (Yao et al., 2023) generalizes CoT by maintaining multiple parallel reasoning branches and using a search algorithm (BFS or DFS) to explore and prune the reasoning tree. The model evaluates the promise of each branch and backtracks when stuck, mimicking human deliberate problem-solving.
+
+Program-of-thought prompting generates code rather than natural language reasoning steps, then executes the code to produce the final answer. This is effective for math word problems because code execution is exact and avoids arithmetic errors.
+
+Process reward models (PRMs) are trained to evaluate the quality of each reasoning step rather than just the final answer. Step-level feedback enables more targeted training signal for improving chain-of-thought quality. OpenAI's o1 uses extended chain-of-thought generated internally during inference, with the model spending more compute "thinking" before responding.
+
+The effectiveness of CoT correlates with model scale — it provides minimal benefit below approximately 7 billion parameters and becomes increasingly effective at larger scales.

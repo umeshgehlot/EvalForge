@@ -1,0 +1,17 @@
+Few-Shot Learning in Language Models
+
+Few-shot learning is the ability to perform a new task from just a handful of examples, without updating model weights. In the context of large language models, few-shot learning occurs entirely through in-context learning: examples are provided within the prompt, and the model generalizes from them to new inputs.
+
+GPT-3 popularized the few-shot paradigm by demonstrating that a single large pretrained model could solve new tasks from 1, 10, or 100 examples in the prompt, often matching or exceeding fine-tuned smaller models. This was unexpected — prior work assumed task adaptation required gradient updates.
+
+The mechanism behind in-context learning is still an active research area. One hypothesis is that attention heads implement implicit gradient descent over the context. Another is that large models learn so many abstract skills during pretraining that new tasks merely activate existing skills rather than learning new ones.
+
+Example selection strongly influences few-shot performance. Random selection is a baseline; better approaches include selecting examples similar to the test input using embedding similarity (retrieval-augmented few-shot), selecting diverse examples that cover the output space, or using active selection methods that choose examples that maximize expected model performance.
+
+Example ordering within the prompt matters. Experiments show that the last few examples have disproportionate influence on the model's output due to recency bias in the attention mechanism. Counteracting this bias requires careful prompt design or ensembling across orderings.
+
+K-shot performance curves typically show diminishing returns after 8-16 examples. The benefit of going from 1-shot to 8-shot is usually larger than from 8-shot to 32-shot. Very long example sets may exceed the context window or introduce noise.
+
+Few-shot vs. fine-tuning tradeoff: few-shot is faster to iterate (no training), requires no labeled dataset, and avoids catastrophic forgetting. Fine-tuning produces more consistent outputs and lower inference cost (shorter prompts). For production systems requiring specific output formats or domain expertise, fine-tuning on a curated dataset often outperforms extensive few-shot prompting.
+
+Instruction-tuned models (like GPT-4 or Claude) are often better zero-shot performers than base models, reducing the number of examples needed for many tasks.

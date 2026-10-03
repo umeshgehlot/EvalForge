@@ -1,0 +1,15 @@
+Vector Databases
+
+Vector databases are purpose-built storage and retrieval systems for high-dimensional embedding vectors. They support efficient approximate nearest-neighbor (ANN) search, enabling semantic similarity queries at scale — a core requirement for RAG, semantic search, and recommendation systems.
+
+Traditional relational databases store structured data and support exact-match or range queries. Vector databases store unstructured data as dense floating-point vectors and answer queries like "find the 10 most semantically similar documents to this query vector." Exact nearest-neighbor search requires comparing the query against every stored vector, which is prohibitively slow for millions of documents.
+
+ANN indexing algorithms trade a small amount of recall for large speedups. HNSW (Hierarchical Navigable Small World) is the most widely used algorithm, building a multi-layer graph where each node connects to nearby neighbors. Search traverses from coarse-grained upper layers to fine-grained lower layers. IVF (Inverted File Index) partitions the vector space into clusters and searches only the nearest clusters. FAISS (Facebook AI Similarity Search) is an open-source library implementing many ANN algorithms efficiently.
+
+Popular standalone vector databases include Pinecone (fully managed, cloud-native), Weaviate (open source with graph capabilities), Qdrant (open source, written in Rust for performance), Chroma (lightweight, embedded for development), and Milvus (open source, enterprise-scale).
+
+pgvector is a PostgreSQL extension that adds vector storage and ANN search to Postgres. It supports L2 distance, cosine similarity, and inner product. The advantage is that teams can use a familiar Postgres stack without introducing a separate specialized database. For datasets up to tens of millions of vectors, pgvector with HNSW indexing performs competitively with standalone vector databases.
+
+Metadata filtering is a critical feature: retrieving the 10 most similar vectors among all documents where tags contains "legal" and created_at > 2024-01-01. This requires the index to support compound queries combining vector similarity with attribute filters.
+
+Embedding dimension ranges from 384 (MiniLM models) to 3072 (text-embedding-3-large). Higher dimensions generally produce better retrieval quality but require more storage and slower search. Storage cost for 1 million 1536-dimensional float32 vectors is approximately 6GB.

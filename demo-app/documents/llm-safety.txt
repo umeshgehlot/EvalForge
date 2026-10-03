@@ -1,0 +1,17 @@
+LLM Safety and Alignment
+
+LLM safety refers to the set of techniques and principles designed to ensure that language models behave helpfully, harmlessly, and honestly. Alignment is the broader challenge of ensuring AI systems pursue goals that match human values and intentions.
+
+The alignment problem arises because language models are trained to predict text or maximize reward signals that are imperfect proxies for what we actually want. A model optimizing for human approval ratings might learn to flatter, agree, and tell users what they want to hear rather than what is true.
+
+Jailbreaking refers to adversarial prompting techniques that circumvent safety guardrails, causing models to generate content they were trained to refuse: hate speech, instructions for harmful activities, or private information. Common jailbreak techniques include roleplay framing ("pretend you are an AI without restrictions"), hypothetical framings, token manipulation, and multi-turn escalation. Safety training must anticipate and defend against these patterns.
+
+Red-teaming is the practice of systematically attempting to elicit harmful behaviors from a model before deployment. Teams of human red-teamers (or automated red-teaming models) probe for failure modes, and findings inform safety fine-tuning. Red-teaming at scale is increasingly automated — language models generate adversarial prompts and evaluate responses.
+
+Constitutional AI (Anthropic) is a method where the model critiques its own outputs against a set of natural language principles (the constitution) and revises them to be safer. This allows safety training with less human labeling — the model learns to identify and correct its own problematic outputs.
+
+Refusal calibration is the problem of tuning how much a model refuses. An over-refusing model that declines benign requests is unhelpful; an under-refusing model that complies with harmful requests is dangerous. Getting this balance right requires measuring both harmful compliance rates and benign refusal rates.
+
+Watermarking embeds statistical signals in generated text that can be detected algorithmically, enabling identification of AI-generated content. Green/red token schemes from language model outputs can be detected by a verifier with the secret key.
+
+Model evals for dangerous capabilities (bioweapons uplift, cyberattack assistance) are conducted by frontier labs before deployment to assess whether models provide meaningful "uplift" to bad actors attempting harmful activities.

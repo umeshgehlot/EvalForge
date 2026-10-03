@@ -1,0 +1,17 @@
+Evaluating Large Language Models
+
+LLM evaluation is the practice of measuring model quality on defined tasks using automated metrics, reference benchmarks, and human judgment. As LLMs are deployed in production, evaluation becomes the primary mechanism for detecting regressions, comparing versions, and making shipping decisions.
+
+Traditional NLP metrics compare generated text to reference outputs. BLEU (Bilingual Evaluation Understudy) measures n-gram precision between hypothesis and reference, primarily used for machine translation. ROUGE measures recall-oriented overlap for summarization. Both have a fundamental weakness: they penalize semantically equivalent but differently worded outputs, making them unreliable for open-ended generation.
+
+BERTScore uses contextual embeddings from BERT to compute token-level similarity between hypothesis and reference, correlating better with human judgments than surface-level metrics. It handles paraphrase better but still requires reference outputs.
+
+LLM-as-judge uses a capable language model (like GPT-4 or Claude) to evaluate another model's outputs. The judge receives the input, the model output, and optionally the expected output or retrieved context, then scores on dimensions like correctness, relevance, faithfulness, and coherence. This scales to open-ended tasks where reference answers are unavailable.
+
+The main concern with LLM-as-judge is bias: judges prefer longer answers, show position bias (favoring the first option in pairwise comparison), and may favor outputs that resemble their own style. Mitigation strategies include calibrating the judge against human labels, using structured rubrics, running pairwise comparisons in both orders and averaging, and using chain-of-thought reasoning before the final score.
+
+RAGAS (Retrieval-Augmented Generation Assessment) provides automated metrics specifically for RAG systems: context precision, context recall, faithfulness (is the answer grounded in context?), and answer relevance (does the answer address the question?). RAGAS uses LLM calls internally for some metrics.
+
+Evals-driven development treats evaluation as a first-class engineering practice. Every change to the model, prompt, or retrieval pipeline is measured against a held-out eval set before deployment. A regression in eval score blocks the release, similar to a failing CI test. This is also called "CI/CD for AI."
+
+Human evaluation remains the gold standard for measuring user preference and real-world quality, but it is expensive and slow. Automated evals should be calibrated against human labels to ensure they measure what matters.

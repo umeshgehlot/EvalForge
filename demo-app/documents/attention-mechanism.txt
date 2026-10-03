@@ -1,0 +1,18 @@
+The Self-Attention Mechanism
+
+Self-attention (also called intra-attention) is the core computational primitive of the Transformer architecture. It allows each position in a sequence to attend to all other positions, computing a weighted average of value vectors based on the compatibility between query and key vectors.
+
+The scaled dot-product attention formula is:
+    Attention(Q, K, V) = softmax(QK^T / sqrt(d_k)) * V
+
+Here Q (queries), K (keys), and V (values) are linear projections of the input embeddings. The dot product QK^T measures compatibility between each query and every key. Dividing by sqrt(d_k) prevents the dot products from becoming too large in high-dimensional spaces, which would push the softmax into regions with very small gradients.
+
+Multi-head attention runs h parallel attention functions on linearly projected subspaces of Q, K, V, then concatenates and projects the results. This allows the model to jointly attend to information from different representation subspaces at different positions. A typical large language model uses 32–96 attention heads.
+
+Causal (masked) self-attention, used in decoder-only models like GPT, prevents each token from attending to future positions. This is implemented by masking the upper triangle of the attention weight matrix with negative infinity before the softmax, forcing those weights to zero.
+
+Cross-attention, used in encoder-decoder models, lets the decoder attend to the encoder's output. The decoder provides the queries while the encoder output provides the keys and values.
+
+Self-attention has O(n²) complexity in sequence length n, which becomes a bottleneck for very long contexts. Various efficient attention variants address this: Longformer uses sliding window attention, Linformer uses low-rank approximation, Flash Attention is an IO-aware exact attention implementation that reduces memory overhead significantly without approximation.
+
+The attention weights are often inspected to understand model behavior, though research suggests they do not always directly correspond to human-interpretable patterns of relevance. Mechanistic interpretability research analyzes attention heads to identify their specific computational roles within the model.

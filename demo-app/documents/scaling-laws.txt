@@ -1,0 +1,19 @@
+Neural Scaling Laws
+
+Neural scaling laws describe the predictable relationship between model performance and the amount of compute, parameters, and data used in training. They allow researchers to forecast the performance of models before training them at full scale, guiding resource allocation decisions.
+
+Kaplan et al. (OpenAI, 2020) established the first comprehensive scaling laws for language models. They found that validation loss decreases as a power law in model parameters N, dataset size D, and compute budget C:
+    L(N) ∝ N^{-α},  L(D) ∝ D^{-β},  L(C) ∝ C^{-γ}
+where α, β, γ are empirically determined exponents. These relationships hold across many orders of magnitude.
+
+A key early finding was that model size mattered more than data size for a given compute budget — the recommendation was to train large models on relatively less data. GPT-3 followed this prescription.
+
+Chinchilla scaling laws (Hoffmann et al., DeepMind, 2022) revisited this and found that the earlier work undertrained large models. For a given compute budget C, the optimal model size and token count both scale as C^{0.5}: to double the compute budget, you should double both model size and training tokens. A "Chinchilla-optimal" model achieves lower loss than a larger undertrained model for the same compute.
+
+The Chinchilla paper recommended approximately 20 training tokens per model parameter for compute-optimal training. Chinchilla (70B parameters, 1.4 trillion tokens) outperformed Gopher (280B parameters, 300B tokens) despite using 4× fewer parameters, because Gopher was undertrained.
+
+Modern frontier models like Llama 3 explicitly train well beyond Chinchilla-optimal, accepting higher training compute in exchange for lower inference cost per query — inference compute savings at massive deployment scale justify the extra training cost.
+
+Emergent abilities are capabilities that appear suddenly above a certain model scale threshold, rather than improving gradually. Examples include multi-step arithmetic, chain-of-thought reasoning, and code generation. Whether emergence is a genuine discontinuity or an artifact of evaluation metric choice is actively debated.
+
+Data quality has emerged as increasingly important as the community approaches the limits of internet-scale text data. Synthetic data generation, careful data curation, and deduplication are critical for extracting maximum benefit from training data.

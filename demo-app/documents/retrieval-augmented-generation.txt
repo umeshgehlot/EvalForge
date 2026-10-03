@@ -1,0 +1,15 @@
+Retrieval-Augmented Generation (RAG)
+
+Retrieval-Augmented Generation (RAG) is a technique that augments a language model's responses with information retrieved from an external knowledge base at inference time. It was introduced in a 2020 Facebook AI paper and has become the dominant paradigm for grounding LLMs in specific knowledge domains.
+
+RAG addresses a key limitation of pretrained LLMs: their knowledge is frozen at the training cutoff date and can be inaccurate for domain-specific or recent information. Rather than retraining the model, RAG retrieves relevant documents at query time and provides them as context for generation.
+
+A RAG pipeline has two main phases. The indexing phase processes a document corpus: documents are split into chunks (typically 256-512 tokens), each chunk is embedded using an embedding model, and the vectors are stored in a vector database alongside the original text. The query phase embeds the user's question, performs nearest-neighbor search to retrieve the top-k most similar chunks, constructs a prompt containing the question and retrieved chunks, and sends it to the LLM to generate a grounded answer.
+
+Chunking strategy significantly affects retrieval quality. Fixed-size chunking splits every N tokens regardless of semantic boundaries. Sentence-aware chunking respects sentence boundaries. Recursive character chunking (used by LangChain by default) attempts to split at natural boundaries like paragraphs then sentences. Semantic chunking uses embedding similarity to keep semantically coherent passages together.
+
+Hybrid search combines dense (embedding-based) retrieval with sparse (BM25 keyword-based) retrieval, then fuses results using reciprocal rank fusion or a weighted combination. This often outperforms either approach alone, especially for queries containing specific named entities or technical terms.
+
+Reranking is a post-retrieval step where a cross-encoder model (which attends to both query and document jointly) rescores the initial retrieved candidates and reorders them. Cross-encoders are more accurate than bi-encoders but too slow to rank the full corpus, so they are used only on the top-k candidates.
+
+RAG metrics measured in evaluation include: context precision (are retrieved chunks actually relevant?), context recall (were all relevant chunks retrieved?), answer faithfulness (is the answer grounded in the retrieved context?), and answer relevance (does the answer address the question?). RAGAS is an open-source framework for computing these metrics automatically.
